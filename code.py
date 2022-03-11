@@ -34,12 +34,13 @@ def remap_fatten(A):
 
     for i in range(0,10):
             for j in range(0,30):
-                if (i * 30 + j) < 209:
-                    x[i * 30 + j] = C[j][i]
-                elif (i * 30 + j) > 209 and (i * 30 + j) < 269:
-                    x[i * 30 + j-1] = C[j][i]
-                elif (i * 30 + j) > 269 and (i * 30 + j) < 300:
-                    x[i * 30 + j-2] = C[j][i]
+                index = i * 30 + j
+                if index < 209:
+                    x[index] = C[j][i]
+                elif index > 209 and index < 269:
+                    x[index-1] = C[j][i]
+                elif index > 269 and index < 300:
+                    x[index-2] = C[j][i]
     return x
 
 def color_chase(color, wait):
@@ -136,6 +137,9 @@ for j in range(0, 30):
     if j2 > 255: j2 =255
     for i in range(0,10):
         BlueWhiteFade[j][i] = (0, 0, j2)
+
+down = True
+blueVal = 0
 mode = 0
 prevButton = True
 while True:
@@ -159,10 +163,26 @@ while True:
             elif rowReversed == 0:
                 for i in range(0, 10):
                     RainbowChaseDown[rowReversed][i] = B[i]
-        time.sleep(1)
+        time.sleep(0.25)
         x = remap_fatten(RainbowChaseDown)
     elif mode == 1:
-       x = remap_fatten(BlueWhiteFade)
+        newMatrix = []
+
+        if blueVal < 10:
+            down = True
+        elif blueVal > 245:
+            down = False
+        if down:
+            blueVal = BlueWhiteFade[0][0][2] + 10
+        else:
+            blueVal = BlueWhiteFade[0][0][2] - 10
+        print(blueVal)
+        newRow = [(0, 0, blueVal)] * 10
+        newMatrix.append(newRow)
+        for i in range(0,29):
+            newMatrix.append(BlueWhiteFade[i])
+        BlueWhiteFade = newMatrix
+        x = remap_fatten(BlueWhiteFade)
     elif mode == 2:
        pixels[269] = WHITE
        print("f")
@@ -172,7 +192,7 @@ while True:
         pixels[i] = x[i]
     pixels.show()
 
-    time.sleep(0.05)
+    time.sleep(0.15)
 
     # Increase or decrease to change the speed of the solid color change.
     # time.sleep(1)
