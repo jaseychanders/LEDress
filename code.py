@@ -198,15 +198,46 @@ alienAbduction = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
+spiral = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
+spiralNewRow = [(76, 23, 191),0,0,0,0,0,0,0,0,0]
 down = True
 blueVal = 0
-mode = 3
+mode = 4
 prevButton = True
 alienStripesCount = 0
 while True:
     if Button.value == False and prevButton == True:
         mode += 1
-        if mode >3:
+        if mode >4:
             mode = 0
         prevButton = False
     elif Button.value == True and prevButton == False:
@@ -237,7 +268,6 @@ while True:
             blueVal = BlueWhiteFade[0][0][2] + 10
         else:
             blueVal = BlueWhiteFade[0][0][2] - 10
-        print(blueVal)
         newRow = [(0, 0, blueVal)] * 10
         newMatrix.append(newRow)
         for i in range(0,29):
@@ -287,6 +317,23 @@ while True:
             newMatrix.append(alienAbduction[i])
         alienAbduction = newMatrix
         x = remap_fatten(alienAbduction)
+    elif mode == 4:
+        newMatrix = []
+        newRow = []
+        newRow.append(spiralNewRow[8])
+        newRow.append(spiralNewRow[9])
+        for i in range(0,9):
+            newRow.append(spiralNewRow[i])
+        newMatrix.append(newRow)
+        spiralNewRow = newRow
+        for j in range(0,29):
+            shifted = []
+            shifted.append(spiral[j][9])
+            for i in range(0,9):
+                shifted.append(spiral[j][i])
+            newMatrix.append(shifted)
+        spiral = newMatrix
+        x = remap_fatten(spiral)
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
