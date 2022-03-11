@@ -5,6 +5,7 @@ from rainbowio import colorwheel
 import neopixel
 from digitalio import DigitalInOut, Direction, Pull
 from ulab import numpy as np
+import random
 pixel_pin = board.A0
 
 Button = DigitalInOut(board.A1)
@@ -137,10 +138,39 @@ for j in range(0, 30):
     if j2 > 255: j2 =255
     for i in range(0,10):
         BlueWhiteFade[j][i] = (0, 0, j2)
-
+twinkle = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
 down = True
 blueVal = 0
-mode = 0
+mode = 2
 prevButton = True
 while True:
     if Button.value == False and prevButton == True:
@@ -184,9 +214,19 @@ while True:
         BlueWhiteFade = newMatrix
         x = remap_fatten(BlueWhiteFade)
     elif mode == 2:
-       pixels[269] = WHITE
-       print("f")
-
+        col = random.randint(0, 9)
+        row = random.randint(0, 29)
+        twinkle[row][col] = (5,5,5)
+        for j in range(0,30):
+            for i in range(0,10):
+                current = twinkle[j][i]
+                if not current == 0 and current[0] <=180:
+                    new = current[0] + 5
+                    twinkle[j][i] = twinkle[j][i] = (new, new, new)
+                elif not current == 0 and current[0] > 180:
+                    twinkle[j][i] = (0,0,0)
+        time.sleep(0.01)
+        x = remap_fatten(twinkle)
 
     for i in range(0, 298):
         pixels[i] = x[i]
