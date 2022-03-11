@@ -168,14 +168,45 @@ twinkle = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
+alienAbduction = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
 down = True
 blueVal = 0
-mode = 2
+mode = 3
 prevButton = True
+alienStripesCount = 0
 while True:
     if Button.value == False and prevButton == True:
         mode += 1
-        if mode >2:
+        if mode >3:
             mode = 0
         prevButton = False
     elif Button.value == True and prevButton == False:
@@ -227,7 +258,35 @@ while True:
                     twinkle[j][i] = (0,0,0)
         time.sleep(0.01)
         x = remap_fatten(twinkle)
-
+    elif mode == 3:
+        newMatrix = []
+        color = (0,0,0)
+        if alienStripesCount > 17:
+            alienStripesCount = 0
+        if alienStripesCount == 0:
+            color = (12, 242, 93)
+            alienStripesCount += 1
+        elif alienStripesCount == 4:
+            color = (3, 140, 62)
+            alienStripesCount += 1
+        elif alienStripesCount == 8:
+            color = (2, 115, 94)
+            alienStripesCount += 1
+        elif alienStripesCount == 12:
+            color = (2, 89, 81)
+            alienStripesCount += 1
+        elif alienStripesCount == 16:
+            color = (3, 65, 89)
+            alienStripesCount += 1
+        else:
+            color = (0, 0, 0)
+            alienStripesCount += 1
+        newRow = [color] * 10
+        newMatrix.append(newRow)
+        for i in range(0,29):
+            newMatrix.append(alienAbduction[i])
+        alienAbduction = newMatrix
+        x = remap_fatten(alienAbduction)
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
