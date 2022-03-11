@@ -36,8 +36,10 @@ def remap_fatten(A):
             for j in range(0,30):
                 if (i * 30 + j) < 209:
                     x[i * 30 + j] = C[j][i]
-                elif (i * 30 + j) > 209 and (i * 30 + j) < 299:
+                elif (i * 30 + j) > 209 and (i * 30 + j) < 269:
                     x[i * 30 + j-1] = C[j][i]
+                elif (i * 30 + j) > 269 and (i * 30 + j) < 300:
+                    x[i * 30 + j-2] = C[j][i]
     return x
 
 def color_chase(color, wait):
@@ -64,7 +66,7 @@ CYAN = (0, 200, 200)
 BLUE = (0, 0, 200)
 PURPLE = (120, 0, 200)
 WHITE = (180, 180, 180)
-A = [[0,0,0,0,0,0,0,0,0,0],
+RainbowChaseDown = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
@@ -94,41 +96,83 @@ A = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
-
-for i in range(0,30, 10):
-    for j in range(0,10):
-        A[i][j] = RED
-        A[i+1][j] = GREEN
-        A[i+2][j] = BLUE
-        A[i+3][j] = WHITE
-        A[i+4][j] = RED
-        A[i+5][j] = GREEN
-        A[i+6][j] = BLUE
-        A[i+7][j] = WHITE
-        A[i+8][j] = RED
-        A[i+9][j] = GREEN
-
-
+for j in range(0,30, 3):
+    for i in range(0,10):
+        RainbowChaseDown[j][i] = RED
+        RainbowChaseDown[j+1][i] = GREEN
+        RainbowChaseDown[j+2][i] = BLUE
+BlueWhiteFade = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
+for j in range(0, 30):
+    j2 = j*5
+    if j2 > 255: j2 =255
+    for i in range(0,10):
+        BlueWhiteFade[j][i] = (0, 0, j2)
+mode = 0
+prevButton = True
 while True:
-    B = [0] * 10
-    for i in range(0, 10):
-        B[i] = A[29][i]
-    for row in range(0, 30):
-        rowReversed = 30 - row -1
-        if rowReversed > 0:
-            for i in range(0, 10):
-                A[rowReversed][i] = A[rowReversed - 1][i]
-        elif rowReversed == 0:
-            for i in range(0, 10):
-                A[rowReversed][i] = B[i]
-    x = remap_fatten(A)
+    if Button.value == False and prevButton == True:
+        mode += 1
+        if mode >2:
+            mode = 0
+        prevButton = False
+    elif Button.value == True and prevButton == False:
+        prevButton = True
+
+    if mode == 0:
+        B = [0] * 10
+        for i in range(0, 10):
+            B[i] = RainbowChaseDown[29][i]
+        for row in range(0, 30):
+            rowReversed = 30 - row -1
+            if rowReversed > 0:
+                for i in range(0, 10):
+                    RainbowChaseDown[rowReversed][i] = RainbowChaseDown[rowReversed - 1][i]
+            elif rowReversed == 0:
+                for i in range(0, 10):
+                    RainbowChaseDown[rowReversed][i] = B[i]
+        time.sleep(1)
+        x = remap_fatten(RainbowChaseDown)
+    elif mode == 1:
+       x = remap_fatten(BlueWhiteFade)
+    elif mode == 2:
+       pixels[269] = WHITE
+       print("f")
 
 
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
 
-    time.sleep(2)
+    time.sleep(0.05)
 
     # Increase or decrease to change the speed of the solid color change.
     # time.sleep(1)
