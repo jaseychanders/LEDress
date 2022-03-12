@@ -323,20 +323,56 @@ staticSpiral = [[(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
     [0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0],
     [0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0],
     [0,0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191)]]
+twoSpirial = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
 spiralNewRow = [(76, 23, 191),0,0,0,0,0,0,0,0,0]
+twoSpiralNewRow = [(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0]
+
 rainbowFadeColor = (166, 5, 5)
 rainbowFadeColors = [(166, 5, 5), (191, 77, 11), (217, 185, 26), (60, 166, 67), (78, 124, 217), (141, 65, 217)]
 rainbowFadePosition = 0
 rainbowCount = 0
 down = True
 blueVal = 0
-mode = 11
+mode = 12
 prevButton = True
 alienStripesCount = 0
+photos = True
 while True:
     if Button.value == False and prevButton == True:
-        mode += 1
-        if mode >10:
+        if photos:
+            mode += 1
+        else:
+            mode += 2
+        if mode >13:
             mode = 0
         prevButton = False
     elif Button.value == True and prevButton == False:
@@ -443,12 +479,28 @@ while True:
             newMatrix.append(shifted)
         spiral = newMatrix
         x = remap_fatten(spiral)
-
     elif mode == 9:
-        x = remap_fatten(staticSpiral)
+        x=x
     elif mode == 10:
-        x = x
+        newMatrix = []
+        newRow = []
+        newRow.append(twoSpiralNewRow[8])
+        newRow.append(twoSpiralNewRow[9])
+        for i in range(0,9):
+            newRow.append(twoSpiralNewRow[i])
+        newMatrix.append(newRow)
+        twoSpiralNewRow = newRow
+        for j in range(0,29):
+            shifted = []
+            shifted.append(twoSpirial[j][9])
+            for i in range(0,9):
+                shifted.append(twoSpirial[j][i])
+            newMatrix.append(shifted)
+        twoSpirial = newMatrix
+        x = remap_fatten(twoSpirial)
     elif mode == 11:
+        x = x
+    elif mode == 12:
         B = [0] * 10
         for i in range(0, 10):
             B[i] = rainbowFade[29][i]
@@ -462,6 +514,8 @@ while True:
                     rainbowFade[rowReversed][i] = B[i]
         time.sleep(0.25)
         x = remap_fatten(rainbowFade)
+    elif mode == 13:
+        x=x
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
