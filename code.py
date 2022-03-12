@@ -362,7 +362,7 @@ rainbowFadePosition = 0
 rainbowCount = 0
 down = True
 blueVal = 0
-mode = 12
+mode = 0
 prevButton = True
 alienStripesCount = 0
 photos = True
@@ -414,21 +414,22 @@ while True:
     elif mode == 3:
         x=x
     elif mode == 4:
-        col = random.randint(0, 9)
-        row = random.randint(0, 29)
-        twinkle[row][col] = (5,5,5)
-        col = random.randint(0, 9)
-        row = random.randint(0, 29)
-        twinkle[row][col] = (5,5,5)
-        for j in range(0,30):
-            for i in range(0,10):
-                current = twinkle[j][i]
-                if not current == 0 and current[0] <=180:
-                    new = current[0] + 10
-                    twinkle[j][i] = twinkle[j][i] = (new, new, new)
-                elif not current == 0 and current[0] > 180:
-                    twinkle[j][i] = (0,0,0)
-        x = remap_fatten(twinkle)
+        newMatrix = []
+        newRow = []
+        newRow.append(spiralNewRow[8])
+        newRow.append(spiralNewRow[9])
+        for i in range(0,9):
+            newRow.append(spiralNewRow[i])
+        newMatrix.append(newRow)
+        spiralNewRow = newRow
+        for j in range(0,29):
+            shifted = []
+            shifted.append(spiral[j][9])
+            for i in range(0,9):
+                shifted.append(spiral[j][i])
+            newMatrix.append(shifted)
+        spiral = newMatrix
+        x = remap_fatten(spiral)
     elif mode == 5:
         x=x
     elif mode == 6:
@@ -463,22 +464,21 @@ while True:
     elif mode == 7:
         x=x
     elif mode == 8:
-        newMatrix = []
-        newRow = []
-        newRow.append(spiralNewRow[8])
-        newRow.append(spiralNewRow[9])
-        for i in range(0,9):
-            newRow.append(spiralNewRow[i])
-        newMatrix.append(newRow)
-        spiralNewRow = newRow
-        for j in range(0,29):
-            shifted = []
-            shifted.append(spiral[j][9])
-            for i in range(0,9):
-                shifted.append(spiral[j][i])
-            newMatrix.append(shifted)
-        spiral = newMatrix
-        x = remap_fatten(spiral)
+        col = random.randint(0, 9)
+        row = random.randint(0, 29)
+        twinkle[row][col] = (5,5,5)
+        col = random.randint(0, 9)
+        row = random.randint(0, 29)
+        twinkle[row][col] = (5,5,5)
+        for j in range(0,30):
+            for i in range(0,10):
+                current = twinkle[j][i]
+                if not current == 0 and current[0] <=180:
+                    new = current[0] + 10
+                    twinkle[j][i] = twinkle[j][i] = (new, new, new)
+                elif not current == 0 and current[0] > 180:
+                    twinkle[j][i] = (0,0,0)
+        x = remap_fatten(twinkle)
     elif mode == 9:
         x=x
     elif mode == 10:
