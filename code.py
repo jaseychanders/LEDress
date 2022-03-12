@@ -98,11 +98,13 @@ RainbowChaseDown = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
-for j in range(0,30, 3):
+for j in range(0,30, 5):
     for i in range(0,10):
-        RainbowChaseDown[j][i] = RED
-        RainbowChaseDown[j+1][i] = GREEN
-        RainbowChaseDown[j+2][i] = BLUE
+        RainbowChaseDown[j][i] = (204, 84, 129)
+        RainbowChaseDown[j+1][i] = (252, 142, 78)
+        RainbowChaseDown[j+2][i] = (106, 202, 137)
+        RainbowChaseDown[j+3][i] = (85, 147, 182)
+        RainbowChaseDown[j+4][i] = (136, 101, 229)
 BlueWhiteFade = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
@@ -228,16 +230,47 @@ spiral = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
+
+staticSpiral = [[(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
+    [0,(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,],
+    [0,0,(76, 23, 191),0,0,0, 0,(97, 186, 230),0,0],
+    [0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230),0],
+    [0,0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230)],
+    [(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0,0],
+    [0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0],
+    [0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0],
+    [0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0],
+    [0,0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191)],
+    [(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
+    [0,(76, 23, 191),0,0, 0,0,(97, 186, 230),0,0,0,],
+    [0,0,(76, 23, 191),0,0,0, 0,(97, 186, 230),0,0],
+    [0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230),0],
+    [0,0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230)],
+    [(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0,0],
+    [0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0],
+    [0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0],
+    [0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0],
+    [0,0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191)],
+    [(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
+    [0,(76, 23, 191),0,0, 0,0,(97, 186, 230),0,0,0,],
+    [0,0,(76, 23, 191),0,0,0, 0,(97, 186, 230),0,0],
+    [0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230),0],
+    [0,0,0,0,(76, 23, 191),0,0,0,0,(97, 186, 230)],
+    [(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0,0],
+    [0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0,0],
+    [0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0,0],
+    [0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0],
+    [0,0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191)]]
 spiralNewRow = [(76, 23, 191),0,0,0,0,0,0,0,0,0]
 down = True
 blueVal = 0
-mode = 4
+mode = 0
 prevButton = True
 alienStripesCount = 0
 while True:
     if Button.value == False and prevButton == True:
         mode += 1
-        if mode >4:
+        if mode >9:
             mode = 0
         prevButton = False
     elif Button.value == True and prevButton == False:
@@ -258,6 +291,8 @@ while True:
         time.sleep(0.25)
         x = remap_fatten(RainbowChaseDown)
     elif mode == 1:
+        x = x
+    elif mode == 2:
         newMatrix = []
 
         if blueVal < 10:
@@ -274,7 +309,12 @@ while True:
             newMatrix.append(BlueWhiteFade[i])
         BlueWhiteFade = newMatrix
         x = remap_fatten(BlueWhiteFade)
-    elif mode == 2:
+    elif mode == 3:
+        x=x
+    elif mode == 4:
+        col = random.randint(0, 9)
+        row = random.randint(0, 29)
+        twinkle[row][col] = (5,5,5)
         col = random.randint(0, 9)
         row = random.randint(0, 29)
         twinkle[row][col] = (5,5,5)
@@ -282,13 +322,14 @@ while True:
             for i in range(0,10):
                 current = twinkle[j][i]
                 if not current == 0 and current[0] <=180:
-                    new = current[0] + 5
+                    new = current[0] + 10
                     twinkle[j][i] = twinkle[j][i] = (new, new, new)
                 elif not current == 0 and current[0] > 180:
                     twinkle[j][i] = (0,0,0)
-        time.sleep(0.01)
         x = remap_fatten(twinkle)
-    elif mode == 3:
+    elif mode == 5:
+        x=x
+    elif mode == 6:
         newMatrix = []
         color = (0,0,0)
         if alienStripesCount > 17:
@@ -317,7 +358,9 @@ while True:
             newMatrix.append(alienAbduction[i])
         alienAbduction = newMatrix
         x = remap_fatten(alienAbduction)
-    elif mode == 4:
+    elif mode == 7:
+        x=x
+    elif mode == 8:
         newMatrix = []
         newRow = []
         newRow.append(spiralNewRow[8])
@@ -334,6 +377,9 @@ while True:
             newMatrix.append(shifted)
         spiral = newMatrix
         x = remap_fatten(spiral)
+
+    elif mode == 9:
+        x = remap_fatten(staticSpiral)
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
