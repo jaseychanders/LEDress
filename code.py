@@ -230,6 +230,68 @@ spiral = [[0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0]]
+rainbowFade = [[0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]]
+
+for i in range(0,10):
+    rainbowFade[0][i] = (166, 5, 5)
+    rainbowFade[01][i] = (171,19, 4)
+    rainbowFade[2][i] = (176, 33, 3)
+    rainbowFade[3][i] = (181, 47,3)
+    rainbowFade[4][i] = (186, 61, 1)
+    rainbowFade[5][i] = (191, 77, 1)
+    rainbowFade[6][i] = (196, 99, 6)
+    rainbowFade[7][i] = (201, 121, 11)
+    rainbowFade[8][i] = (206, 142, 16)
+    rainbowFade[9][i] = (211, 164,21)
+    rainbowFade[10][i] = (217, 185, 26)
+    rainbowFade[11][i] = (186, 181, 34)
+    rainbowFade[12][i] = (155, 177, 42)
+    rainbowFade[13][i] = (124, 173, 50)
+    rainbowFade[14][i] = (92, 169, 58)
+    rainbowFade[15][i] = (60, 166, 67)
+    rainbowFade[16][i] = (64, 158, 97)
+    rainbowFade[17][i] = (66, 154, 110)
+    rainbowFade[18][i] = (68,150, 121)
+    rainbowFade[19][i] = (72,142,145)
+    rainbowFade[20][i] = (76,134,169)
+    rainbowFade[21][i] = (78, 124, 217)
+    rainbowFade[22][i] = (91,112,217)
+    rainbowFade[23][i] = (104,100,217)
+    rainbowFade[24][i] = (117,88,217)
+    rainbowFade[25][i] = (130,76,217)
+    rainbowFade[26][i] = (141, 65, 217)
+    rainbowFade[27][i] = (147,50,164)
+    rainbowFade[28][i] = (153,35,110)
+    rainbowFade[29][i] = (159,20,56)
 
 staticSpiral = [[(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
     [0,(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,],
@@ -262,15 +324,19 @@ staticSpiral = [[(76, 23, 191),0,0,0,0,(97, 186, 230),0,0,0,0],
     [0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191),0],
     [0,0,0,0,(97, 186, 230),0,0,0,0,(76, 23, 191)]]
 spiralNewRow = [(76, 23, 191),0,0,0,0,0,0,0,0,0]
+rainbowFadeColor = (166, 5, 5)
+rainbowFadeColors = [(166, 5, 5), (191, 77, 11), (217, 185, 26), (60, 166, 67), (78, 124, 217), (141, 65, 217)]
+rainbowFadePosition = 0
+rainbowCount = 0
 down = True
 blueVal = 0
-mode = 0
+mode = 11
 prevButton = True
 alienStripesCount = 0
 while True:
     if Button.value == False and prevButton == True:
         mode += 1
-        if mode >9:
+        if mode >10:
             mode = 0
         prevButton = False
     elif Button.value == True and prevButton == False:
@@ -380,6 +446,22 @@ while True:
 
     elif mode == 9:
         x = remap_fatten(staticSpiral)
+    elif mode == 10:
+        x = x
+    elif mode == 11:
+        B = [0] * 10
+        for i in range(0, 10):
+            B[i] = rainbowFade[29][i]
+        for row in range(0, 30):
+            rowReversed = 30 - row -1
+            if rowReversed > 0:
+                for i in range(0, 10):
+                    rainbowFade[rowReversed][i] = rainbowFade[rowReversed - 1][i]
+            elif rowReversed == 0:
+                for i in range(0, 10):
+                    rainbowFade[rowReversed][i] = B[i]
+        time.sleep(0.25)
+        x = remap_fatten(rainbowFade)
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
