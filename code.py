@@ -365,18 +365,27 @@ blueVal = 0
 mode = 0
 prevButton = True
 alienStripesCount = 0
-photos = True
+photos = False
+display = True
+displayTimer = 0
 while True:
-    if Button.value == False and prevButton == True:
-        if photos:
-            mode += 1
-        else:
-            mode += 2
-        if mode >13:
-            mode = 0
-        prevButton = False
-    elif Button.value == True and prevButton == False:
-        prevButton = True
+    if display:
+        displayTimer += 1
+        if displayTimer % 50 == 0:
+            mode +=2
+            if mode > 13:
+                mode = 0
+    else:
+        if Button.value == False and prevButton == True:
+            if photos:
+                mode += 1
+            else:
+                mode += 2
+            if mode >13:
+                mode = 0
+            prevButton = False
+        elif Button.value == True and prevButton == False:
+            prevButton = True
 
     if mode == 0:
         B = [0] * 10
