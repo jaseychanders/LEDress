@@ -8,6 +8,7 @@ from ulab import numpy as np
 import random
 pixel_pin = board.A0
 
+# Buttons
 Button1 = DigitalInOut(board.A1)
 Button2 = DigitalInOut(board.A2)
 Button3 = DigitalInOut(board.A3)
@@ -20,44 +21,60 @@ Button3.direction = Direction.INPUT
 Button3.pull = Pull.UP
 Button4.direction = Direction.INPUT
 Button4.pull = Pull.UP
-prevButton1 = True
-prevButton2 = True
-prevButton3 = True
-prevButton4 = True
+button_vals = {"button1": False, "button2": False, "button3": False, "button4": False}
+prev_button_vals = {"prev_1": True, "prev_2": True, "prev_3": True, "prev_4": True}
 
-def read_buttons():
-    button_vals = {}
-    if Button1.value == False and prevButton1 == True:
+def read_buttons(prev_button_vals):
+    if not Button1.value and prev_button_vals["prev_1"]:
             button_vals["button1"] = True
-            prevButton1 = False
-    elif Button1.value == True and prevButton1 == False:
+            prev_button_vals["prev_1"] = False
+    elif Button1.value and not prev_button_vals["prev_1"]:
             button_vals["button1"] = False
-            prevButton1 = True
-    if Button2.value == False and prevButton2 == True:
+            prev_button_vals["prev_1"] = True
+    if not Button2.value and prev_button_vals["prev_2"]:
             button_vals["button2"] = True
-            prevButton2 = False
-    elif Button2.value == True and prevButton2 == False:
+            prev_button_vals["prev_2"] = False
+    elif Button2.value and not prev_button_vals["prev_2"]:
             button_vals["button2"] = False
-            prevButton2 = True
-    if Button3.value == False and prevButton3 == True:
+            prev_button_vals["prev_2"] = True
+    if not Button3.value and prev_button_vals["prev_3"]:
             button_vals["button3"] = True
-            prevButton3 = False
-    elif Button3.value == True and prevButton3 == False:
+            prev_button_vals["prev_3"] = False
+    elif Button3.value and not prev_button_vals["prev_3"]:
             button_vals["button3"] = False
-            prevButton3 = True
-    if Button4.value == False and prevButton4 == True:
+            prev_button_vals["prev_3"] = True
+    if not Button4.value and prev_button_vals["prev_4"]:
             button_vals["button4"] = True
-            prevButton4 = False
-    elif Button4.value == True and prevButton4 == False:
+            prev_button_vals["prev_4"] = False
+    elif Button4.value and not prev_button_vals["prev_4"]:
             button_vals["button4"] = False
-            prevButton4 = True
+            prev_button_vals["prev_4"] = True
+    return (button_vals, prev_button_vals)
 
-
+# Set up neopixels
 num_pixels = 298
-
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False)
 
-def remap_fatten(A):
+def create_zeros_matrix():
+    newMatrix = []
+    for i in range(0, 30):
+        row = []
+        for j in range(0,10):
+            row.append((0, 0, 0))
+        newMatrix.append(row)
+    return newMatrix
+
+RainbowChaseDown = create_zeros_matrix()
+BlueWhiteFade = create_zeros_matrix()
+twinkle = create_zeros_matrix()
+alienAbduction = create_zeros_matrix()
+spiral = create_zeros_matrix()
+rainbowFade = create_zeros_matrix()
+twoSpirial = create_zeros_matrix()
+offMatrix = create_zeros_matrix()
+
+# turns a 10x30 matrix into a serial list of rgb values
+def remap_flatten(A):
     C = [row[:] for row in A]
     x = [0] * 298
     for i in range(0,10):
@@ -84,6 +101,7 @@ def remap_fatten(A):
                     x[index-2] = C[j][i]
     return x
 
+# patterns
 def color_chase(color, wait):
     for i in range(num_pixels):
         pixels[i] = color
@@ -99,25 +117,6 @@ def rainbow_cycle(wait):
             pixels[i] = colorwheel(rc_index & 255)
         pixels.show()
         time.sleep(wait)
-
-def create_zeros_matrix():
-    newMatrix = []
-    for i in range(0, 30):
-        row = []
-        for j in range(0,10):
-            row.append((0, 0, 0))
-        newMatrix.append(row)
-    return newMatrix
-
-RainbowChaseDown = create_zeros_matrix()
-BlueWhiteFade = create_zeros_matrix()
-twinkle = create_zeros_matrix()
-alienAbduction = create_zeros_matrix()
-spiral = create_zeros_matrix()
-rainbowFade = create_zeros_matrix()
-twoSpirial = create_zeros_matrix()
-offMatrix = create_zeros_matrix()
-
 
 for j in range(0,30, 5):
     for i in range(0,10):
@@ -214,10 +213,11 @@ display = True
 displayTimer = 0
 off = True
 
-while True:
-    buttons = read_buttons()
 
-    if buttons["Button1"] == True:
+while True:
+    button_vals, prev_button_vals = read_buttons(prev_button_vals)
+
+    if button_vals["button1"] == True:
         if mode == 14:
             mode = 0
         else:
@@ -253,7 +253,7 @@ while True:
                 for i in range(0, 10):
                     RainbowChaseDown[rowReversed][i] = B[i]
         time.sleep(0.25)
-        x = remap_fatten(RainbowChaseDown)
+        x = remap_flatten(RainbowChaseDown)
     elif mode == 1:
         x = x
     elif mode == 2:
@@ -272,7 +272,7 @@ while True:
         for i in range(0,29):
             newMatrix.append(BlueWhiteFade[i])
         BlueWhiteFade = newMatrix
-        x = remap_fatten(BlueWhiteFade)
+        x = remap_flatten(BlueWhiteFade)
     elif mode == 3:
         x=x
     elif mode == 4:
@@ -291,7 +291,7 @@ while True:
                 shifted.append(spiral[j][i])
             newMatrix.append(shifted)
         spiral = newMatrix
-        x = remap_fatten(spiral)
+        x = remap_flatten(spiral)
     elif mode == 5:
         x=x
     elif mode == 6:
@@ -322,7 +322,7 @@ while True:
         for i in range(0,29):
             newMatrix.append(alienAbduction[i])
         alienAbduction = newMatrix
-        x = remap_fatten(alienAbduction)
+        x = remap_flatten(alienAbduction)
     elif mode == 7:
         x=x
     elif mode == 8:
@@ -340,7 +340,7 @@ while True:
                     twinkle[j][i] = twinkle[j][i] = (new, new, new)
                 elif not current == 0 and current[0] > 180:
                     twinkle[j][i] = (0,0,0)
-        x = remap_fatten(twinkle)
+        x = remap_flatten(twinkle)
     elif mode == 9:
         x=x
     elif mode == 10:
@@ -359,7 +359,7 @@ while True:
                 shifted.append(twoSpirial[j][i])
             newMatrix.append(shifted)
         twoSpirial = newMatrix
-        x = remap_fatten(twoSpirial)
+        x = remap_flatten(twoSpirial)
     elif mode == 11:
         x = x
     elif mode == 12:
@@ -375,13 +375,14 @@ while True:
                 for i in range(0, 10):
                     rainbowFade[rowReversed][i] = B[i]
         time.sleep(0.25)
-        x = remap_fatten(rainbowFade)
+        x = remap_flatten(rainbowFade)
     elif mode == 13:
         x=x
     elif mode == 14:
-        x = remap_fatten(offMatrix)
+        x = remap_flatten(offMatrix)
     for i in range(0, 298):
         pixels[i] = x[i]
     pixels.show()
 
+    button_vals = {"button1": False, "button2": False, "button3": False, "button4": False}
     time.sleep(0.15)
