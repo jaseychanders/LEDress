@@ -209,7 +209,7 @@ mode = 0
 
 alienStripesCount = 0
 photos = False
-display = True
+display = False
 displayTimer = 0
 off = True
 
@@ -217,11 +217,7 @@ off = True
 while True:
     button_vals, prev_button_vals = read_buttons(prev_button_vals)
 
-    if button_vals["button1"] == True:
-        if mode == 14:
-            mode = 0
-        else:
-            mode = 14
+
     if display:
         displayTimer += 1
         if displayTimer % 50 == 0:
@@ -229,16 +225,14 @@ while True:
             if mode > 13:
                 mode = 0
     else:
-        if Button.value == False and prevButton == True:
+        if button_vals["button1"]:
             if photos:
                 mode += 1
             else:
                 mode += 2
             if mode >13:
                 mode = 0
-            prevButton = False
-        elif Button.value == True and prevButton == False:
-            prevButton = True
+
 
     if mode == 0:
         B = [0] * 10
